@@ -1,0 +1,94 @@
+<!--ADMIN only-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-gray-900 shadow-md fixed top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-400 flex items-center">
+                🎮 <span class="ml-2">GameOn</span>
+            </h1>
+            <div class="space-x-4">
+                <a href="/" class="text-white hover:text-indigo-300 font-semibold">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Edit Game Form Content -->
+    <div class="pt-20 flex items-center justify-center px-4">
+        <div class="bg-gray-800 p-10 rounded-2xl shadow-2xl w-full max-w-lg">
+            <h1 class="text-4xl font-extrabold text-indigo-400 mb-8 text-center">Edit Game 🎮</h1>
+            <form th:action="@{/games/edit/{id}(id=${game.id})}" method="post" th:object="${game}" class="space-y-6">
+
+				<!-- Current Image Preview -->
+				<div class="flex flex-col items-center justify-center">
+				    <label class="block mb-2 text-gray-300 font-medium text-center">Current Image</label>
+				    <img th:src="${game.imageUrl}" alt="Current Game Image" class="w-40 h-40 object-cover rounded-lg mb-3 border border-gray-600" />
+				</div>
+
+                <!-- Image URL Edit Field -->
+                <div>
+                    <label class="block mb-2 text-gray-300 font-medium">Image URL</label>
+                    <input type="text" th:field="*{imageUrl}" class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all" placeholder="Enter image URL" required />
+                    <div th:if="${#fields.hasErrors('imageUrl')}" class="text-red-500 text-sm mt-1">
+                        <span th:errors="*{imageUrl}"></span>
+                    </div>
+                </div>
+
+                <!-- Name Field -->
+                <div>
+                    <label class="block mb-2 text-gray-300 font-medium">Game Name</label>
+                    <input type="text" th:field="*{name}" class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all" placeholder="Enter game name" required />
+                    <div th:if="${#fields.hasErrors('name')}" class="text-red-500 text-sm mt-1">
+                        <span th:errors="*{name}"></span>
+                    </div>
+                </div>
+
+                <!-- Genre Field -->
+                <div>
+                    <label class="block mb-2 text-gray-300 font-medium">Genre</label>
+                    <input type="text" th:field="*{genre}" class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all" placeholder="Enter game genre" required />
+                    <div th:if="${#fields.hasErrors('genre')}" class="text-red-500 text-sm mt-1">
+                        <span th:errors="*{genre}"></span>
+                    </div>
+                </div>
+
+                <!-- Description Field -->
+                <div>
+                    <label class="block mb-2 text-gray-300 font-medium">Description</label>
+                    <textarea th:field="*{description}" rows="4" class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all" placeholder="Enter game description" required></textarea>
+                    <div th:if="${#fields.hasErrors('description')}" class="text-red-500 text-sm mt-1">
+                        <span th:errors="*{description}"></span>
+                    </div>
+                </div>
+
+                <!-- Price Field -->
+                <div>
+                    <label class="block mb-2 text-gray-300 font-medium">Price ($)</label>
+                    <input type="number" step="0.01" th:field="*{price}" class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all" placeholder="Enter price" required />
+                    <div th:if="${#fields.hasErrors('price')}" class="text-red-500 text-sm mt-1">
+                        <span th:errors="*{price}"></span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex justify-between items-center">
+                    <a href="/games/list" class="text-gray-400 hover:text-white text-sm font-medium flex items-center">
+                        ← <span class="ml-1">Back to Games</span>
+                    </a>
+                    <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 px-6 py-2 rounded-xl text-white font-semibold shadow-md transition-all">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

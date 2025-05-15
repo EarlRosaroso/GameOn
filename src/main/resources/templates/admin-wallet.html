@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Set User Wallet Balance - Admin - GameOn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.25rem;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-gray-900 shadow-md fixed top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-400 flex items-center">
+                🎮 <span class="ml-2">GameOn</span>
+            </h1>
+            <div class="space-x-4">
+                <a href="/" class="text-white hover:text-indigo-300 font-semibold">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Form Content -->
+    <div class="pt-20 flex items-center justify-center px-4">
+        <div class="bg-gray-800 p-10 rounded-2xl shadow-2xl w-full max-w-lg">
+            <h1 class="text-4xl font-extrabold text-indigo-400 mb-8 text-center">Set User Wallet Balance 💰</h1>
+
+            <!-- Error/Success messages -->
+            <div th:if="${errorMessage}" class="bg-red-600 p-4 rounded mb-6 text-center" th:text="${errorMessage}"></div>
+            <div th:if="${successMessage}" class="bg-green-600 p-4 rounded mb-6 text-center" th:text="${successMessage}"></div>
+
+            <form th:action="@{/admin/set-wallet}" method="post" class="space-y-6">
+                <!-- User Selection -->
+                <div>
+                    <label for="userId" class="block mb-2 text-gray-300 font-medium">Select User</label>
+                    <div class="relative">
+                        <select id="userId" name="userId" required 
+                            class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all pr-10">
+                            <option value="" disabled selected>Select a user</option>
+                            <option th:each="user : ${users}" th:value="${user.userId}" th:text="${user.username}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Wallet Balance Field -->
+                <div>
+                    <label for="walletBalance" class="block mb-2 text-gray-300 font-medium">Wallet Balance ($)</label>
+                    <input type="number" id="walletBalance" name="walletBalance" min="0" step="0.01" required
+                        class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all" placeholder="Enter wallet balance" />
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex justify-between items-center">
+                    <a href="/games/list" class="text-gray-400 hover:text-white text-sm font-medium flex items-center">
+                        ← <span class="ml-1">Back to Games</span>
+                    </a>
+                    <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 px-6 py-2 rounded-xl text-white font-semibold shadow-md transition-all">
+                        Set Balance
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

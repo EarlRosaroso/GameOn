@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - GameOn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+	<script>
+	    function validatePasswords() {
+	        const password = document.getElementById('password').value;
+	        const confirmPassword = document.getElementById('confirmPassword').value;
+	        const errorMsg = document.getElementById('passwordError');
+
+	        if (password !== confirmPassword) {
+	            errorMsg.classList.remove('hidden');
+	            return false; // Prevent form submission
+	        } else {
+	            errorMsg.classList.add('hidden');
+	            return true; // Allow form submission
+	        }
+	    }
+	</script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-gray-900 shadow-md top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-400 flex items-center">
+                🎮 <span class="ml-2">GameOn</span>
+            </h1>
+            <div class="space-x-4">
+                <a href="/" class="text-white hover:text-indigo-300 font-semibold">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Signup Form -->
+    <div class="flex items-center justify-center min-h-screen px-4">
+        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl max-w-md w-full">
+            <h2 class="text-4xl font-extrabold text-indigo-400 mb-8 text-center">Sign Up</h2>
+
+            <!-- Error Message -->
+            <div th:if="${errorMessage}" class="bg-red-500 p-4 rounded-lg mb-6 text-white text-center font-medium shadow-md">
+                <p th:text="${errorMessage}"></p>
+            </div>
+
+            <!-- Success Message -->
+            <div th:if="${successMessage}" class="bg-green-500 p-4 rounded-lg mb-6 text-white text-center font-medium shadow-md">
+                <p th:text="${successMessage}"></p>
+            </div>
+
+			<!-- Signup Form -->
+			<form th:action="@{/signup}" method="post" class="space-y-6" onsubmit="return validatePasswords()">
+			    <div>
+			        <label for="username" class="block text-sm font-semibold text-indigo-300 mb-1">Username</label>
+			        <input type="text" id="username" name="username" class="w-full px-4 py-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all" placeholder="Enter your username" required>
+			    </div>
+			    <div>
+			        <label for="email" class="block text-sm font-semibold text-indigo-300 mb-1">Email</label>
+			        <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all" placeholder="Enter your email" required>
+			    </div>
+			    <div>
+			        <label for="password" class="block text-sm font-semibold text-indigo-300 mb-1">Password</label>
+			        <input type="password" id="password" name="password" class="w-full px-4 py-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all" placeholder="Create a password" required>
+			    </div>
+			    <div>
+			        <label for="confirmPassword" class="block text-sm font-semibold text-indigo-300 mb-1">Confirm Password</label>
+			        <input type="password" id="confirmPassword" name="confirmPassword" class="w-full px-4 py-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all" placeholder="Confirm your password" required>
+			        <!-- Password mismatch error message -->
+			        <p id="passwordError" class="text-red-500 text-sm mt-1 hidden">Passwords do not match.</p>
+			    </div>
+			    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-md font-semibold shadow-lg transition-all">
+			        Sign Up
+			    </button>
+			</form>
+
+            <div class="mt-6 text-center">
+                <p class="text-gray-400 text-sm">Already have an account?</p>
+                <a href="/login" class="inline-block mt-2 px-6 py-3 bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white text-lg font-semibold transition-all shadow-lg">
+                    Login Here
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

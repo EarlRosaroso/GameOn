@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library - GameOn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-gray-900 shadow-md fixed top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-400">🎮 GameOn Library</h1>
+            <div class="space-x-4">
+                <a href="/" class="text-white hover:text-indigo-300 font-semibold">Home</a>
+                <form th:if="${session.isLoggedIn == true}" th:action="@{/logout}" method="post" class="inline">
+                    <button type="submit" class="text-white hover:text-indigo-300 font-semibold">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="pt-24 px-8">
+        <div class="max-w-6xl mx-auto bg-gray-800 rounded-2xl shadow-2xl p-8">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-indigo-400">Your Library 📚</h2>
+            </div>
+
+            <div th:if="${successMessage}" class="bg-green-500 p-4 rounded-lg mb-4 text-white">
+                <p th:text="${successMessage}"></p>
+            </div>
+            <div th:if="${errorMessage}" class="bg-red-500 p-4 rounded-lg mb-4 text-white">
+                <p th:text="${errorMessage}"></p>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto border-collapse">
+					<thead>
+					    <tr class="bg-gradient-to-r from-indigo-700 via-purple-600 to-indigo-700 text-white">
+					        <th class="px-6 py-3 text-center text-sm font-semibold uppercase">Game</th>
+					        <th class="px-6 py-3 text-center text-sm font-semibold uppercase">Genre</th>
+					        <th class="px-6 py-3 text-center text-sm font-semibold uppercase">Description</th>
+					        <th class="px-6 py-3 text-center text-sm font-semibold uppercase">Purchase Date</th>
+					    </tr>
+					</thead>
+					<tbody>
+					    <tr th:each="entry : ${library}" class="border-b border-gray-700 hover:bg-gray-700 transition duration-200">
+					        <td class="px-6 py-4">
+					            <div class="flex flex-col items-center gap-2">
+					                <span th:text="${entry.game.name}" class="font-semibold text-white text-lg text-center"></span>
+					                <img th:src="${entry.game.imageUrl}" alt="Game Image" class="w-16 h-16 object-cover rounded-md border border-gray-600" />
+					            </div>
+					        </td>
+					        <td class="px-6 py-4 text-center text-gray-300" th:text="${entry.game.genre}"></td>
+					        <td class="px-6 py-4 text-gray-400 text-sm" th:text="${entry.game.description}"></td>
+					        <td class="px-6 py-4 text-center" th:text="${entry.purchaseDate}"></td>
+					    </tr>
+					</tbody>
+                </table>
+            </div>
+			<!-- Back to Games -->
+			<div class="mt-6 flex justify-start">
+				<a href="/games/list" class="text-gray-400 hover:text-white text-sm font-medium flex items-center">
+					← <span class="ml-1">Back to Games</span>
+				</a>
+			</div>
+        </div>
+    </div>
+
+</body>
+</html>

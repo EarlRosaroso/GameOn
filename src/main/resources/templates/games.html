@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Available Games - GameOn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+	<script>
+	  // Logout Modal
+	  function showLogoutModal() {
+	    document.getElementById('logoutModal').classList.remove('hidden');
+	  }
+
+	  function hideLogoutModal() {
+	    document.getElementById('logoutModal').classList.add('hidden');
+	  }
+
+	  // When user clicks "Cancel"
+	  document.addEventListener('DOMContentLoaded', () => {
+	    document.getElementById('cancelBtn').addEventListener('click', hideLogoutModal);
+	    // When user clicks "Logout"
+	    document.getElementById('confirmLogoutBtn').addEventListener('click', () => {
+	      document.getElementById('logoutForm').submit();
+	    });
+	  });
+	</script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+
+	<!-- Confirmation Modal -->
+	<div id="logoutModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+	    <div class="bg-gray-900 text-white rounded-2xl shadow-2xl p-6 max-w-sm w-full border border-gray-700">
+	        <h2 class="text-2xl font-bold text-indigo-400 text-center">Confirm Logout</h2>
+	        <p class="mt-3 text-center text-gray-300">Are you sure you want to log out?</p>
+	        <div class="mt-5 flex justify-center space-x-4">
+	            <button onclick="document.getElementById('logoutModal').classList.add('hidden')"
+	                class="px-5 py-2 bg-gray-700 hover:bg-gray-600 rounded-xl text-white font-semibold transition duration-300">
+	                Cancel
+	            </button>
+	            <button onclick="document.getElementById('logoutForm').submit()" 
+	                class="px-5 py-2 bg-red-600 hover:bg-red-500 rounded-xl text-white font-semibold transition duration-300">
+	                Logout
+	            </button>
+	        </div>
+	    </div>
+	</div>
+
+	<!-- Top Navigation Bar -->
+	<nav class="bg-gray-900 shadow-md fixed top-0 w-full z-10">
+	    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+	        <h1 class="text-xl font-bold text-indigo-400">🎮 GameOn</h1>
+	        <div class="space-x-4">
+	            <a href="/" class="text-white hover:text-indigo-300 font-semibold">Home</a>
+
+	            <!-- Show Login if not logged in, and Logout if logged in -->
+	            <a th:if="${session.isLoggedIn == null or session.isLoggedIn == false}" href="/login" class="text-white hover:text-indigo-300 font-semibold">Login</a>
+	            <form th:if="${session.isLoggedIn == true}" th:action="@{/logout}" method="post" class="inline" id="logoutForm">
+	                <button type="button" onclick="showLogoutModal()" class="text-white hover:text-indigo-300 font-semibold">Logout</button>
+	            </form>
+	        </div>
+	    </div>
+	</nav>
+
+    <!-- Page Content -->
+    <div class="pt-24 px-8">
+        <div class="max-w-6xl mx-auto bg-gray-800 rounded-2xl shadow-2xl p-8">
+			<div class="text-center mb-6">
+			    <h2 class="text-3xl font-bold text-indigo-400">Available Games 🎮</h2>
+			    <!-- Display Wallet Balance only for logged-in non-admin users -->
+			    <div th:if="${session.isLoggedIn == true and session.isAdmin != true}">
+			        <p class="mt-4 text-xl font-semibold">Your Wallet Balance: $<span th:text="${walletBalance}"></span></p>
+			    </div>
+			</div>
+
+            <!-- Success and Error Messages -->
+            <div th:if="${successMessage}" class="bg-green-500 p-4 rounded-lg mb-4 text-white">
+                <p th:text="${successMessage}"></p>
+            </div>
+            <div th:if="${errorMessage}" class="bg-red-500 p-4 rounded-lg mb-4 text-white">
+                <p th:text="${errorMessage}"></p>
+            </div>
+
+			        <div class="overflow-x-auto">
+			            <table class="min-w-full table-auto border-collapse">
+			                <thead>
+			                    <tr class="bg-gradient-to-r from-indigo-700 via-purple-600 to-indigo-700 text-white">
+			                        <th class="px-6 py-3 text-center text-sm font-semibold uppercase">Game</th>
+			                        <th class="px-6 py-3 text-center text-sm font-semibold uppercase">Genre</th>
+			                        <th class="px-6 py-3 text-center text-sm font-semibold uppercase">Description</th>
+			                        <th class="px-6 py-3 text-center text-sm font-semibold uppercase">Price($)</th>
+			                        <th th:if="${session.isAdmin == true}" class="px-6 py-3 text-left text-center text-sm font-semibold uppercase">Actions</th>
+			                        <th th:if="${session.isLoggedIn == true and session.isAdmin != true}" class="px-6 py-3 text-center text-sm font-semibold uppercase">Purchase</th>
+			                    </tr>
+			                </thead>
+							<tbody>
+							    <tr th:each="game : ${games}" class="border-b border-gray-700 hover:bg-gray-700 transition duration-200">
+							        <td class="px-6 py-4">
+							            <div class="flex flex-col items-center gap-2">
+							                <span th:text="${game.name}" class="font-semibold text-white text-lg text-center"></span>
+							                <img th:src="${game.imageUrl}" alt="Game Image" class="w-16 h-16 object-cover rounded-md border border-gray-600" />
+							            </div>
+							        </td>
+							        <td class="px-6 py-4 text-center text-gray-300" th:text="${game.genre}"></td>
+							        <td class="px-6 py-4 text-gray-400 text-sm" th:text="${game.description}"></td>
+							        <td class="px-6 py-4 text-center font-semibold text-green-400" th:text="${game.price}"></td>
+
+							        <td th:if="${session.isAdmin == true}" class="px-6 py-4">
+							            <div class="flex justify-center items-center gap-2">
+							                <a th:href="@{'/games/edit/' + ${game.id}}" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-sm rounded-lg font-semibold">Edit</a>
+							                <form th:action="@{'/games/delete/' + ${game.id}}" method="post" id="delete-form-[[${game.id}]]" class="inline">
+							                    <button type="submit" onclick="confirmDelete(event, [[${game.id}]])" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-sm rounded-lg font-semibold">Delete</button>
+							                </form>
+							            </div>
+							        </td>
+
+									<td th:if="${session.isLoggedIn == true and session.isAdmin != true}" class="px-6 py-4 text-center">
+									    <form th:action="@{'/games/purchase/' + ${game.id}}" method="post">
+									        <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-sm rounded-lg font-semibold">
+									            Purchase
+									        </button>
+									    </form>
+									</td>
+							    </tr>
+							</tbody>
+			            </table>
+			        </div>
+			    </div>
+			</div>
+
+            <div class="mt-6 text-center">
+                <a th:if="${session.isAdmin == true}" href="/games/add" class="px-5 py-2 bg-green-500 hover:bg-green-600 rounded-xl text-white text-sm font-semibold transition-all duration-300">
+                    + Add Game
+                </a>
+            </div>
+            <!-- Library Button (Visible for Logged-in Users) -->
+            <div class="mt-6 text-center">
+                <a th:if="${session.isLoggedIn == true and session.isAdmin != true}" href="/library" class="px-5 py-2 bg-blue-500 hover:bg-blue-600 rounded-xl text-white text-sm font-semibold transition-all duration-300">
+                    📚 View Library
+                </a>
+            </div>
+			<div class="mt-6 text-center">
+				<a th:if="${session.isAdmin == true}" href="/admin/set-wallet" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl text-white text-sm font-semibold">
+				    Manage Wallet Balances
+				</a>
+			</div>
+        </div>
+    </div>
+</body>
+</html>
