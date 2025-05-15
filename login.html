@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - GameOn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-gray-900 shadow-md fixed top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-400 flex items-center">
+                🎮 <span class="ml-2">GameOn</span>
+            </h1>
+            <div class="space-x-4">
+                <a href="/" class="text-white hover:text-indigo-300 font-semibold">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl max-w-md w-full">
+            <h2 class="text-4xl font-extrabold text-indigo-400 mb-8 text-center">Login</h2>
+
+            <!-- Error Message -->
+            <div th:if="${errorMessage}" class="bg-red-500 p-4 rounded-lg mb-6 text-white text-center font-medium shadow-md">
+                <p th:text="${errorMessage}"></p>
+            </div>
+
+            <!-- Login Form -->
+            <form th:action="@{/login}" method="post" class="space-y-6">
+                <!-- Email Input -->
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-indigo-300 mb-1">Email</label>
+                    <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all" placeholder="Enter your email" required>
+                </div>
+                <!-- Password Input -->
+                <div>
+                    <label for="password" class="block text-sm font-semibold text-indigo-300 mb-1">Password</label>
+                    <input type="password" id="password" name="password" class="w-full px-4 py-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all" placeholder="Enter your password" required>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-md font-semibold shadow-lg transition-all">
+                    Login
+                </button>
+            </form>
+
+            <!-- Signup Section -->
+            <div class="mt-6 text-center">
+                <p class="text-gray-400 text-sm">Don't have an account?</p>
+                <a href="/signup" class="inline-block mt-2 px-6 py-3 bg-green-500 hover:bg-green-600 rounded-xl text-white text-lg font-semibold transition-all shadow-lg">
+                    Sign Up
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
